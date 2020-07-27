@@ -1,5 +1,5 @@
 # Stock Market Analyser
-Projects made using Stream Lit
+Project made using Stream Lit.
 
 
 Enter the company stock code and starting and edind dates to get stock data from Yahoo Finance and do data analysis.
