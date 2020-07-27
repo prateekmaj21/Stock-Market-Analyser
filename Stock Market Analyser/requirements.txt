@@ -1,7 +1,0 @@
-matplotlib
-numpy
-pandas
-streamlit
-seaborn
-mpl_finance
-pandas_datareader
