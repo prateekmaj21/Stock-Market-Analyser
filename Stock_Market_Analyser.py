@@ -8,6 +8,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+from PIL import Image
+import os
 
 from mpl_finance import candlestick_ohlc
 import matplotlib.dates as mdates
