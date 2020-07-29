@@ -22,6 +22,9 @@ st.title('Stock Market App')
 #text
 st.write("Developed by Prateek Majumder")
 
+image = Image.open(os.path.join('STOCK.png'))
+st.image(image)
+
 com = st.text_input("Enter the Stock Code of company","AAPL")
 
 'You Enterted the company code: ', com
