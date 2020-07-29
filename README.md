@@ -1,4 +1,6 @@
 # Stock Market Analyser
+(Image)[!https://github.com/prateekmaj21/Stock-Market-Analyzer/blob/master/Media/STOCK.png]
+
 Project made using Stream Lit.
 
 
