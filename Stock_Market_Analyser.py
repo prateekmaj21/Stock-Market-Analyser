@@ -92,17 +92,17 @@ ohlc_day = st.text_input("Enter number of days for Resampling for OHLC Candlesti
 'You Entered the number of days for resampling: ', ohlc_day
 
 # Resample to get open-high-low-close (OHLC) on every n days of data
-df_ohlc = df['Close'].resample(ohlc_day + 'D').ohlc()
-df_volume = df['Volume'].resample(ohlc_day + 'D').sum()
+df_ohlc = df.resample(ohlc_day + 'D').agg({'Open': 'first', 
+                                           'High': 'max',
+                                           'Low': 'min', 
+                                           'Close': 'last',
+                                           'Volume': 'sum'})
 
-df_ohlc.reset_index(inplace=True)
-df_ohlc['Date'] = df_ohlc['Date'].map(mdates.date2num)
+df_ohlc.dropna(inplace=True)
 
 # Create and visualize candlestick charts
 plt.figure(figsize=(8, 6))
-ax1 = plt.subplot2grid((6, 1), (0, 0), rowspan=5, colspan=1)
-ax1.xaxis_date()
-mpf.plot(df_ohlc, type='candle', ax=ax1)
+mpf.plot(df_ohlc, type='candle', style='charles', volume=True)
 plt.xlabel('Time')
 plt.ylabel('Stock Candlesticks')
 st.pyplot()
