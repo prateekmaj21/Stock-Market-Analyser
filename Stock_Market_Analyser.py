@@ -3,7 +3,7 @@ warnings.filterwarnings('ignore')  # Hide warnings
 
 import datetime as dt
 import pandas as pd
-import pandas_datareader.data as web
+import yfinance as yf
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -12,7 +12,7 @@ from PIL import Image
 import os
 import streamlit as st
 
-from mplfinance.original_flavor import candlestick_ohlc
+import mplfinance as mpf
 import matplotlib.dates as mdates
 
 # Importing Libraries done
@@ -35,7 +35,14 @@ st_date = st.text_input("Enter Starting date as YYYY-MM-DD", "2000-01-10")
 end_date = st.text_input("Enter Ending date as YYYY-MM-DD", "2000-01-20")
 'You Entered the ending date: ', end_date
 
-df = web.DataReader(com, 'yahoo', st_date, end_date)  # Collects data
+# Convert input dates to datetime
+st_date = pd.to_datetime(st_date)
+end_date = pd.to_datetime(end_date)
+
+# Fetch data using yfinance
+df = yf.download(com, start=st_date, end=end_date)
+
+# Reset index and set date as index
 df.reset_index(inplace=True)
 df.set_index("Date", inplace=True)
 
@@ -64,13 +71,13 @@ mov_avg = st.text_input("Enter number of days Moving Average:", "50")
 
 df["mov_avg_close"] = df['Close'].rolling(window=int(mov_avg), min_periods=0).mean()
 
-'1. Plot of Stock Closing Value for '+ mov_avg+ " Days of Moving Average"
+'1. Plot of Stock Closing Value for ' + mov_avg + " Days of Moving Average"
 '   Actual Closing Value also Present'
 st.line_chart(df[["mov_avg_close", "Close"]])
 
 df["mov_avg_open"] = df['Open'].rolling(window=int(mov_avg), min_periods=0).mean()
 
-'2. Plot of Stock Open Value for '+ mov_avg+ " Days of Moving Average"
+'2. Plot of Stock Open Value for ' + mov_avg + " Days of Moving Average"
 '   Actual Opening Value also Present'
 st.line_chart(df[["mov_avg_open", "Open"]])
 
@@ -85,7 +92,7 @@ ohlc_day = st.text_input("Enter number of days for Resampling for OHLC Candlesti
 'You Entered the number of days for resampling: ', ohlc_day
 
 # Resample to get open-high-low-close (OHLC) on every n days of data
-df_ohlc = df['Close'].resample(ohlc_day + 'D').ohlc() 
+df_ohlc = df['Close'].resample(ohlc_day + 'D').ohlc()
 df_volume = df['Volume'].resample(ohlc_day + 'D').sum()
 
 df_ohlc.reset_index(inplace=True)
@@ -95,7 +102,7 @@ df_ohlc['Date'] = df_ohlc['Date'].map(mdates.date2num)
 plt.figure(figsize=(8, 6))
 ax1 = plt.subplot2grid((6, 1), (0, 0), rowspan=5, colspan=1)
 ax1.xaxis_date()
-candlestick_ohlc(ax1, df_ohlc.values, width=2, colorup='g')
+mpf.plot(df_ohlc, type='candle', ax=ax1)
 plt.xlabel('Time')
 plt.ylabel('Stock Candlesticks')
 st.pyplot()
