@@ -3,5 +3,5 @@ numpy
 pandas
 streamlit
 seaborn
-mpl_finance
+mplfinance
 pandas_datareader
