@@ -5,3 +5,4 @@ streamlit
 seaborn
 mplfinance
 pandas_datareader
+yfinance
