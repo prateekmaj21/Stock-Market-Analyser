@@ -72,15 +72,16 @@ mov_avg = st.text_input("Enter number of days Moving Average:", "50")
 df["mov_avg_close"] = df['Close'].rolling(window=int(mov_avg), min_periods=0).mean()
 
 '1. Plot of Stock Closing Value for ' + mov_avg + " Days of Moving Average"
-'   Actual Closing Value also Present'
+' Actual Closing Value also Present'
 st.line_chart(df[["mov_avg_close", "Close"]])
 
 df["mov_avg_open"] = df['Open'].rolling(window=int(mov_avg), min_periods=0).mean()
 
 '2. Plot of Stock Open Value for ' + mov_avg + " Days of Moving Average"
-'   Actual Opening Value also Present'
+' Actual Opening Value also Present'
 st.line_chart(df[["mov_avg_open", "Open"]])
 
+# OHLC Candlestick Graph
 st.title("OHLC Candlestick Graph")
 '------------------------------------------------------------------------------------------'
 'Candlestick charts are used by traders to determine possible price movement based on past patterns.'
@@ -92,9 +93,9 @@ ohlc_day = st.text_input("Enter number of days for Resampling for OHLC Candlesti
 'You Entered the number of days for resampling: ', ohlc_day
 
 # Resample to get open-high-low-close (OHLC) on every n days of data
-df_ohlc = df.resample(ohlc_day + 'D').agg({'Open': 'first', 
+df_ohlc = df.resample(ohlc_day + 'D').agg({'Open': 'first',
                                            'High': 'max',
-                                           'Low': 'min', 
+                                           'Low': 'min',
                                            'Close': 'last',
                                            'Volume': 'sum'})
 
@@ -106,6 +107,77 @@ mpf.plot(df_ohlc, type='candle', style='charles', volume=True)
 plt.xlabel('Time')
 plt.ylabel('Stock Candlesticks')
 st.pyplot()
+
+# Basic Statistics
+st.title('Basic Statistics')
+st.write("Summary Statistics of Stock Prices")
+st.write(df.describe())
+
+# Correlation Matrix
+st.title('Correlation Matrix')
+corr_matrix = df.corr()
+sns.heatmap(corr_matrix, annot=True, cmap='coolwarm')
+st.pyplot()
+
+# Bollinger Bands
+st.title('Bollinger Bands')
+bollinger_window = st.text_input("Enter number of days for Bollinger Bands:", "20")
+'You Entered the Bollinger Bands Window: ', bollinger_window
+
+df['MA20'] = df['Close'].rolling(window=int(bollinger_window)).mean()
+df['BB_upper'] = df['MA20'] + 2*df['Close'].rolling(window=int(bollinger_window)).std()
+df['BB_lower'] = df['MA20'] - 2*df['Close'].rolling(window=int(bollinger_window)).std()
+
+st.line_chart(df[['Close', 'BB_upper', 'BB_lower']])
+
+# Volume Analysis
+st.title('Volume Analysis')
+st.line_chart(df['Volume'])
+
+# RSI Calculation
+st.title('Relative Strength Index (RSI)')
+rsi_window = st.text_input("Enter number of days for RSI Calculation:", "14")
+'You Entered the RSI Window: ', rsi_window
+
+delta = df['Close'].diff()
+gain = (delta.where(delta > 0, 0)).rolling(window=int(rsi_window)).mean()
+loss = (-delta.where(delta < 0, 0)).rolling(window=int(rsi_window)).mean()
+
+rs = gain / loss
+df['RSI'] = 100 - (100 / (1 + rs))
+
+st.line_chart(df['RSI'])
+
+# MACD Calculation
+st.title('MACD (Moving Average Convergence Divergence)')
+df['EMA12'] = df['Close'].ewm(span=12, adjust=False).mean()
+df['EMA26'] = df['Close'].ewm(span=26, adjust=False).mean()
+df['MACD'] = df['EMA12'] - df['EMA26']
+df['Signal_Line'] = df['MACD'].ewm(span=9, adjust=False).mean()
+
+st.line_chart(df[['MACD', 'Signal_Line']])
+
+# Return Analysis
+st.title('Return Analysis')
+df['Daily_Return'] = df['Close'].pct_change()
+df['Cumulative_Return'] = (1 + df['Daily_Return']).cumprod()
+
+st.line_chart(df['Daily_Return'])
+st.line_chart(df['Cumulative_Return'])
+
+# Risk Metrics
+st.title('Risk Metrics')
+st.write("Sharpe Ratio:")
+risk_free_rate = 0.01
+sharpe_ratio = (df['Daily_Return'].mean() - risk_free_rate) / df['Daily_Return'].std()
+st.write(sharpe_ratio)
+
+st.write("Beta:")
+market_data = yf.download('^GSPC', start=st_date, end=end_date)
+market_data['Market_Return'] = market_data['Close'].pct_change()
+covariance = df['Daily_Return'].cov(market_data['Market_Return'])
+beta = covariance / market_data['Market_Return'].var()
+st.write(beta)
 
 st.title("Note")
 '------------------------------------------------------'
