@@ -44,7 +44,7 @@ df = yf.download(com, start=st_date, end=end_date)
 
 # Reset index and set date as index
 df.reset_index(inplace=True)
-df.set_index("Date", inplace=True)
+df.set_index("Date", inplace=True)  # Ensure DatetimeIndex is set
 
 # Title
 st.title('Stock Market Data')
