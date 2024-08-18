@@ -110,17 +110,23 @@ st.pyplot()
 
 # Basic Statistics
 st.title('Basic Statistics')
+'---------------------------------------------------------'
+'Calculating some statistical data like percentile, mean and std of the numerical values.'
 st.write("Summary Statistics of Stock Prices")
 st.write(df.describe())
 
 # Correlation Matrix
 st.title('Correlation Matrix')
+'---------------------------------------------------------'
+'Displays a heatmap of the correlation between different stock price metrics.'
 corr_matrix = df.corr()
 sns.heatmap(corr_matrix, annot=True, cmap='coolwarm')
 st.pyplot()
 
 # Bollinger Bands
 st.title('Bollinger Bands')
+'---------------------------------------------------------'
+'Visualizes Bollinger Bands for the stock, which are used to measure price volatility.'
 bollinger_window = st.text_input("Enter number of days for Bollinger Bands:", "20")
 'You Entered the Bollinger Bands Window: ', bollinger_window
 
@@ -132,10 +138,16 @@ st.line_chart(df[['Close', 'BB_upper', 'BB_lower']])
 
 # Volume Analysis
 st.title('Volume Analysis')
+'---------------------------------------------------------'
+'Shows the trading volume over time.'
+
 st.line_chart(df['Volume'])
 
 # RSI Calculation
 st.title('Relative Strength Index (RSI)')
+'---------------------------------------------------------'
+'Displays the RSI indicator to assess overbought or oversold conditions.'
+
 rsi_window = st.text_input("Enter number of days for RSI Calculation:", "14")
 'You Entered the RSI Window: ', rsi_window
 
@@ -150,6 +162,9 @@ st.line_chart(df['RSI'])
 
 # MACD Calculation
 st.title('MACD (Moving Average Convergence Divergence)')
+'---------------------------------------------------------'
+'Visualizes MACD and Signal Line for identifying potential buy or sell signals.'
+
 df['EMA12'] = df['Close'].ewm(span=12, adjust=False).mean()
 df['EMA26'] = df['Close'].ewm(span=26, adjust=False).mean()
 df['MACD'] = df['EMA12'] - df['EMA26']
@@ -159,6 +174,9 @@ st.line_chart(df[['MACD', 'Signal_Line']])
 
 # Return Analysis
 st.title('Return Analysis')
+'---------------------------------------------------------'
+'Analyzes daily returns and cumulative returns.'
+
 df['Daily_Return'] = df['Close'].pct_change()
 df['Cumulative_Return'] = (1 + df['Daily_Return']).cumprod()
 
@@ -167,6 +185,10 @@ st.line_chart(df['Cumulative_Return'])
 
 # Risk Metrics
 st.title('Risk Metrics')
+'---------------------------------------------------------'
+'Calculations of the Sharpe Ratio and Beta for risk assessment.'
+
+
 st.write("Sharpe Ratio:")
 risk_free_rate = 0.01
 sharpe_ratio = (df['Daily_Return'].mean() - risk_free_rate) / df['Daily_Return'].std()
