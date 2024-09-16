@@ -206,18 +206,10 @@ st.write(beta)
 # Stock Prediction using Prophet
 st.title('Stock Price Prediction using Prophet')
 
-# Get user input for training and prediction date ranges
-train_start_date = st.text_input("Enter Training Start Date (YYYY-MM-DD)", "2015-01-01")
-train_end_date = st.text_input("Enter Training End Date (YYYY-MM-DD)", "2020-01-01")
-prediction_days = st.text_input("Enter number of days to predict:", "365")
-
-# Convert input dates to datetime
-train_start_date = pd.to_datetime(train_start_date)
-train_end_date = pd.to_datetime(train_end_date)
-prediction_days = int(prediction_days)
+prediction_days = st.text_input("Enter number of days to predict:", "5")
 
 # Filter data for training
-train_df = df.loc[train_start_date:train_end_date].reset_index()
+train_df = df.loc[st_date:end_date].reset_index()
 
 # Prophet expects two columns: ds (date) and y (value)
 train_df = train_df[['Date', 'Close']].rename(columns={'Date': 'ds', 'Close': 'y'})
@@ -240,6 +232,9 @@ st.write(forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']])
 st.write("Forecast Plot:")
 fig1 = model.plot(forecast)
 st.pyplot(fig1)
+
+st.write("Forecast Line Plot:")
+st.line_chart(forecast['yhat'].tail(prediction_days))
 
 # Show forecast components
 st.write("Forecast Components:")
