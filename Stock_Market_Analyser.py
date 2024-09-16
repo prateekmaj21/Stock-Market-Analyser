@@ -103,11 +103,20 @@ df_ohlc = df.resample(ohlc_day + 'D').agg({'Open': 'first',
 df_ohlc.dropna(inplace=True)
 
 # Create and visualize candlestick charts
-plt.figure(figsize=(8, 6))
-mpf.plot(df_ohlc, type='candle', style='charles', volume=True)
+#plt.figure(figsize=(8, 6))
+#mpf.plot(df_ohlc, type='candle', style='charles', volume=True)
+#plt.xlabel('Time')
+#plt.ylabel('Stock Candlesticks')
+#st.pyplot()
+
+
+# Create and visualize candlestick charts
+fig, ax = plt.subplots(figsize=(8, 6))  # Create a new figure
+mpf.plot(df_ohlc, type='candle', style='charles', volume=True, ax=ax)  # Pass the ax to the plot
 plt.xlabel('Time')
 plt.ylabel('Stock Candlesticks')
-st.pyplot()
+st.pyplot(fig)  # Explicitly pass the figure to Streamlit's pyplot
+
 
 # Basic Statistics
 st.title('Basic Statistics')
