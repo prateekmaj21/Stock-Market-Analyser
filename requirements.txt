@@ -6,3 +6,4 @@ seaborn
 mplfinance
 pandas_datareader
 yfinance
+prophet
