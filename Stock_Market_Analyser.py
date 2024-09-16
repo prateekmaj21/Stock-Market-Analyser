@@ -227,7 +227,7 @@ model = Prophet()
 model.fit(train_df)
 
 # Create a dataframe to hold future dates for prediction
-future = model.make_future_dataframe(periods=prediction_days)
+future = model.make_future_dataframe(periods=prediction_days, freq='B')
 
 # Make predictions
 forecast = model.predict(future)
