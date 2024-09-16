@@ -206,8 +206,8 @@ st.write(beta)
 # Stock Prediction using Prophet
 st.title('Stock Price Prediction using Prophet')
 
-prediction_days = st.text_input("Enter number of days to predict:", "5")
-
+prediction_days = st.text_input("Enter number of days to predict:")
+prediction_days = int(prediction_days)
 # Filter data for training
 train_df = df.loc[st_date:end_date].reset_index()
 
