@@ -27,13 +27,13 @@ st.write("Developed by Prateek Majumder")
 image = Image.open('STOCK.png')
 st.image(image)
 
-com = st.text_input("Enter the Stock Code of company", "AAPL")
+com = st.text_input("Enter the Stock Code of company", "TCS")
 'You Entered the company code: ', com
 
-st_date = st.text_input("Enter Starting date as YYYY-MM-DD", "2000-01-10")
+st_date = st.text_input("Enter Starting date as YYYY-MM-DD", "2024-08-01")
 'You Entered the starting date: ', st_date
 
-end_date = st.text_input("Enter Ending date as YYYY-MM-DD", "2000-01-20")
+end_date = st.text_input("Enter Ending date as YYYY-MM-DD", "2024-09-15")
 'You Entered the ending date: ', end_date
 
 # Convert input dates to datetime
@@ -67,7 +67,7 @@ st.title('Moving Averages')
 'The reason for calculating the moving average of a stock is to help smooth out the price data over a specified period of time by creating a constantly updated average price.'
 'A simple moving average (SMA) is a calculation that takes the arithmetic mean of a given set of prices over the specific number of days in the past; for example, over the previous 15, 30, 100, or 200 days.'
 
-mov_avg = st.text_input("Enter number of days Moving Average:", "50")
+mov_avg = st.text_input("Enter number of days Moving Average:", "5")
 'You Entered the Moving Average: ', mov_avg
 
 df["mov_avg_close"] = df['Close'].rolling(window=int(mov_avg), min_periods=0).mean()
@@ -90,7 +90,7 @@ st.title("OHLC Candlestick Graph")
 'Many algorithms are based on the same price information shown in candlestick charts.'
 'Trading is often dictated by emotion, which can be read in candlestick charts.'
 
-ohlc_day = st.text_input("Enter number of days for Resampling for OHLC Candlestick Chart", "50")
+ohlc_day = st.text_input("Enter number of days for Resampling for OHLC Candlestick Chart", "5")
 'You Entered the number of days for resampling: ', ohlc_day
 
 # Resample to get open-high-low-close (OHLC) on every n days of data
@@ -210,7 +210,7 @@ st.write(beta)
 # Stock Prediction using Prophet
 st.title('Stock Price Prediction using Prophet')
 
-prediction_days = st.text_input("Enter number of days to predict:")
+prediction_days = st.text_input("Enter number of days to predict:",'15')
 prediction_days = int(prediction_days)
 # Filter data for training
 train_df = df.loc[st_date:end_date].reset_index()
