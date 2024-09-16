@@ -1,6 +1,7 @@
 import warnings
 warnings.filterwarnings('ignore')  # Hide warnings
-
+# Import necessary libraries for Prophet
+from prophet import Prophet
 import datetime as dt
 import pandas as pd
 import yfinance as yf
@@ -200,6 +201,50 @@ market_data['Market_Return'] = market_data['Close'].pct_change()
 covariance = df['Daily_Return'].cov(market_data['Market_Return'])
 beta = covariance / market_data['Market_Return'].var()
 st.write(beta)
+
+
+# Stock Prediction using Prophet
+st.title('Stock Price Prediction using Prophet')
+
+# Get user input for training and prediction date ranges
+train_start_date = st.text_input("Enter Training Start Date (YYYY-MM-DD)", "2015-01-01")
+train_end_date = st.text_input("Enter Training End Date (YYYY-MM-DD)", "2020-01-01")
+prediction_days = st.text_input("Enter number of days to predict:", "365")
+
+# Convert input dates to datetime
+train_start_date = pd.to_datetime(train_start_date)
+train_end_date = pd.to_datetime(train_end_date)
+prediction_days = int(prediction_days)
+
+# Filter data for training
+train_df = df.loc[train_start_date:train_end_date].reset_index()
+
+# Prophet expects two columns: ds (date) and y (value)
+train_df = train_df[['Date', 'Close']].rename(columns={'Date': 'ds', 'Close': 'y'})
+
+# Initialize and fit the Prophet model
+model = Prophet()
+model.fit(train_df)
+
+# Create a dataframe to hold future dates for prediction
+future = model.make_future_dataframe(periods=prediction_days)
+
+# Make predictions
+forecast = model.predict(future)
+
+# Show the predicted data
+st.write('Forecast Data:')
+st.write(forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']])
+
+# Plot the predictions
+st.write("Forecast Plot:")
+fig1 = model.plot(forecast)
+st.pyplot(fig1)
+
+# Show forecast components
+st.write("Forecast Components:")
+fig2 = model.plot_components(forecast)
+st.pyplot(fig2)
 
 st.title("Note")
 '------------------------------------------------------'
