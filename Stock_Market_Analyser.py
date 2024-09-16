@@ -244,67 +244,6 @@ fig2 = model.plot_components(forecast)
 st.pyplot(fig2)
 
 
-# Hide warnings
-warnings.filterwarnings('ignore')
-
-# Input for stock code, start date, and end date
-st.title('-----------Stock Price Prediction with Prophet------------')
-
-com = st.text_input("Enter the Stock Code of company", "AAPL")
-st_date = st.text_input("Enter Starting date as YYYY-MM-DD", "2022-01-01")
-end_date = st.text_input("Enter Ending date as YYYY-MM-DD", "2023-01-01")
-
-# Convert input dates to datetime
-st_date = pd.to_datetime(st_date)
-end_date = pd.to_datetime(end_date)
-
-# Fetch stock data
-df = yf.download(com, start=st_date, end=end_date)
-
-# Check if data is valid
-if df.empty:
-    st.error(f"No data found for the ticker: {com}")
-    st.stop()
-
-# Reset index and prepare data for Prophet
-df.reset_index(inplace=True)
-df = df[['Date', 'Close']]  # Use 'Date' and 'Close' columns
-df.rename(columns={'Date': 'ds', 'Close': 'y'}, inplace=True)
-
-# Display stock data
-st.write("Stock Data:", df)
-
-# Inputs for Prophet model
-train_period = st.text_input("Enter the number of days for training (e.g., 365):", "365")
-prediction_period = st.text_input("Enter the number of days for prediction (e.g., 30):", "30")
-
-# Convert inputs to integers
-train_period = int(train_period)
-prediction_period = int(prediction_period)
-
-# Fit the Prophet model
-model = Prophet()
-model.fit(df)
-
-# Make future predictions
-future = model.make_future_dataframe(periods=prediction_period)
-forecast = model.predict(future)
-
-# Plot the forecast
-st.write("Forecasted Stock Prices:")
-st.write(forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail())
-
-# Plot forecast
-fig_forecast = model.plot(forecast)
-st.pyplot(fig_forecast)
-
-# Additional Plots (Trend, Weekly, Yearly Components)
-st.write("Trend and Seasonal Components:")
-
-# Plot components
-fig_components = model.plot_components(forecast)
-st.pyplot(fig_components)
-
 # Plot only trend
 st.write("Stock Price Trend:")
 fig_trend, ax_trend = plt.subplots(figsize=(10, 6))
@@ -314,7 +253,6 @@ ax_trend.set_xlabel('Date')
 ax_trend.set_ylabel('Price')
 ax_trend.legend()
 st.pyplot(fig_trend)
-
 
 
 st.title("Note")
