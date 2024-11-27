@@ -45,6 +45,9 @@ per = st.text_input("Enter The stock data history period:", "1mo")
 # Fetch data using yfinance
 df = yf.download(com, period=str(per))
 
+# Flatten the multi-index into single-level columns
+df.columns = df.columns.droplevel(1)
+
 # Reset index and set date as index
 df.reset_index(inplace=True)
 df.set_index("Date", inplace=True)  # Ensure DatetimeIndex is set
