@@ -38,9 +38,7 @@ per = st.text_input("Enter The stock data history period:", "1mo")
 # end_date = st.text_input("Enter Ending date as YYYY-MM-DD", "2024-09-15")
 # 'You Entered the ending date: ', end_date
 
-# Convert input dates to datetime
-#st_date = pd.to_datetime(st_date)
-#end_date = pd.to_datetime(end_date)
+
 
 # Fetch data using yfinance
 df = yf.download(com, period=str(per))
@@ -51,6 +49,14 @@ df.columns = df.columns.droplevel(1)
 # Reset index and set date as index
 df.reset_index(inplace=True)
 df.set_index("Date", inplace=True)  # Ensure DatetimeIndex is set
+
+# Assuming the 'Date' column is in the index
+start_date = df.index.min()
+end_date = df.index.max()
+
+# Print the start and end dates
+st.write(f"Start Date: {start_date}")
+st.write(f"End Date: {end_date}")
 
 # Title
 st.title('Stock Market Data')
