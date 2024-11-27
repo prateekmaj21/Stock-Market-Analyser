@@ -46,9 +46,12 @@ df.reset_index(inplace=True)
 df.set_index("Date", inplace=True)  # Ensure DatetimeIndex is set
 
 
+# Assuming the 'Date' column is in the index
+st_date = df.index.min()
+end_date = df.index.max()
 
 # Print the start and end dates
-st.write(f"Start Date: {start_date}")
+st.write(f"Start Date: {st_date}")
 st.write(f"End Date: {end_date}")
 
 # Title
@@ -197,9 +200,6 @@ df['Cumulative_Return'] = (1 + df['Daily_Return']).cumprod()
 st.line_chart(df['Daily_Return'])
 st.line_chart(df['Cumulative_Return'])
 
-# Assuming the 'Date' column is in the index
-st_date = df.index.min()
-end_date = df.index.max()
 
 # Risk Metrics
 st.title('Risk Metrics')
