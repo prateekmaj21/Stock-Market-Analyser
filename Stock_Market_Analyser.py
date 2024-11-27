@@ -27,21 +27,23 @@ st.write("Developed by Prateek Majumder")
 image = Image.open('STOCK.png')
 st.image(image)
 
+
+st.write("period accepts values like '1d', '5d', '1wk', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', and 'max'.")
 com = st.text_input("Enter the Stock Code of company", "TCS")
 'You Entered the company code: ', com
 
-st_date = st.text_input("Enter Starting date as YYYY-MM-DD", "2024-08-01")
+per = st.text_input("Enter The stock data history period:", "1mo")
 'You Entered the starting date: ', st_date
 
-end_date = st.text_input("Enter Ending date as YYYY-MM-DD", "2024-09-15")
-'You Entered the ending date: ', end_date
+# end_date = st.text_input("Enter Ending date as YYYY-MM-DD", "2024-09-15")
+# 'You Entered the ending date: ', end_date
 
 # Convert input dates to datetime
-st_date = pd.to_datetime(st_date)
-end_date = pd.to_datetime(end_date)
+#st_date = pd.to_datetime(st_date)
+#end_date = pd.to_datetime(end_date)
 
 # Fetch data using yfinance
-df = yf.download(com, start=st_date, end=end_date)
+df = yf.download(com, period=str(per))
 
 # Reset index and set date as index
 df.reset_index(inplace=True)
