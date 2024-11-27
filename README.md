@@ -6,7 +6,9 @@ Project made using Stream Lit.
 Enter the company stock code and starting and end dates to get stock data from Yahoo Finance and do data analysis.
 
 #### Working Video Youtube Link- 
-https://youtu.be/gkXyX1W3eF0
+
+[![Video Thumbnail](https://img.youtube.com/vi/kgOGnVr7veE/0.jpg)](https://www.youtube.com/watch?v=kgOGnVr7veE)
+
 
 #### Blog Link (Analytics Vidhya Medium) - 
 https://medium.com/analytics-vidhya/creating-a-stock-market-analyser-in-python-c0284563b197
