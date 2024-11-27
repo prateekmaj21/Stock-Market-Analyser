@@ -51,7 +51,7 @@ df.reset_index(inplace=True)
 df.set_index("Date", inplace=True)  # Ensure DatetimeIndex is set
 
 # Assuming the 'Date' column is in the index
-start_date = df.index.min()
+st_date = df.index.min()
 end_date = df.index.max()
 
 # Print the start and end dates
