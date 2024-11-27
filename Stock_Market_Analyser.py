@@ -76,7 +76,13 @@ df["mov_avg_close"] = df['Close'].rolling(window=int(mov_avg), min_periods=0).me
 
 '1. Plot of Stock Closing Value for ' + mov_avg + " Days of Moving Average"
 ' Actual Closing Value also Present'
-st.line_chart(df[["mov_avg_close", "Close"]])
+
+required_columns = ["mov_avg_close", "Close"]
+if not all(col in df.columns for col in required_columns):
+    st.error("Missing required columns in the DataFrame: 'mov_avg_close' or 'Close'.")
+else:
+    st.line_chart(df[required_columns])
+
 
 df["mov_avg_open"] = df['Open'].rolling(window=int(mov_avg), min_periods=0).mean()
 
