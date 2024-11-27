@@ -73,10 +73,9 @@ mov_avg = st.text_input("Enter number of days Moving Average:", "5")
 'You Entered the Moving Average: ', mov_avg
 
 df["mov_avg_close"] = df['Close'].rolling(window=int(mov_avg), min_periods=0).mean()
-
+st.write(df)
 '1. Plot of Stock Closing Value for ' + mov_avg + " Days of Moving Average"
 ' Actual Closing Value also Present'
-
 required_columns = ["mov_avg_close", "Close"]
 if not all(col in df.columns for col in required_columns):
     st.error("Missing required columns in the DataFrame: 'mov_avg_close' or 'Close'.")
