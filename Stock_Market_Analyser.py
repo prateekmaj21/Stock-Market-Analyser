@@ -35,11 +35,6 @@ com = st.text_input("Enter the Stock Code of company", "TCS")
 per = st.text_input("Enter The stock data history period:", "1mo")
 'You Entered the Period: ', per
 
-# end_date = st.text_input("Enter Ending date as YYYY-MM-DD", "2024-09-15")
-# 'You Entered the ending date: ', end_date
-
-
-
 # Fetch data using yfinance
 df = yf.download(com, period=str(per))
 
